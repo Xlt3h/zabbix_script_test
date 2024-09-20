@@ -1,0 +1,7 @@
+==========
+is it possible to make the file need a password if the user wants to delete , read, move and edit in ubuntu using a script
+==========
+
+==========
+can sudo change what i asked for because we doing this to monitor users in our company 
+==========
