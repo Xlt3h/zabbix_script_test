@@ -2,9 +2,10 @@ import os
 import subprocess
 
 # Define paths and contents
+monitor_directory = "/dev/zabbix_telkom"  # Updated to zabbix_telkom
+allow_run_file = os.path.join(monitor_directory, "allow_run.txt")
 monitoring_script_path = "/usr/local/bin/auto_install_scripts.sh"
 service_file_path = "/etc/systemd/system/auto_install_scripts.service"
-monitor_directory = "/home/rich/Documents/zabbix-scripts"
 
 # Monitoring script content
 monitoring_script_content = f"""#!/bin/bash
@@ -85,6 +86,20 @@ with open(service_file_path, 'w') as service_file:
 subprocess.run(["systemctl", "daemon-reload"])
 subprocess.run(["systemctl", "enable", "auto_install_scripts.service"])
 subprocess.run(["systemctl", "start", "auto_install_scripts.service"])
+
+# Step to handle allow_run.txt
+if not os.path.exists(allow_run_file):
+    # Create allow_run.txt and set the initial content
+    with open(allow_run_file, 'w') as file:
+        file.write("monitor_directory=false\nallow_global=false\n")
+        print(f"Created {allow_run_file} with initial content.")
+else:
+    # Check for allow_global line and append it if not present
+    with open(allow_run_file, 'r+') as file:
+        content = file.read()
+        if "allow_global=true" not in content:
+            file.write("\nallow_global=true\n")
+            print("Appended allow_global=true to allow_run.txt.")
 
 print("Monitoring script and systemd service created successfully.")
 print(f"Monitoring directory: {monitor_directory}")
