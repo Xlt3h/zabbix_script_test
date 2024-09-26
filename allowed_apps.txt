@@ -1,6 +1,5 @@
 teams-for-linux
 camunda-modeler
-firefox
 outlook-for-linux
 prospect-mail
 podman*
